@@ -364,6 +364,95 @@
     /* FADE IN */
     .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── HAMBURGER ─── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      z-index: 200;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--ink);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0; bottom: 0;
+      background: rgba(253,252,250,0.97);
+      z-index: 150;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 15px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+    .nav-drawer .nav-cta {
+      color: var(--white) !important;
+      background: var(--charcoal);
+      padding: 14px 40px;
+    }
+
+    /* ─── SP MEDIA QUERY ─── */
+    @media (max-width: 768px) {
+      /* header */
+      header { padding: 0 20px; }
+      nav { display: none; }
+      .hamburger { display: flex; }
+
+      /* section */
+      section { padding: 64px 0; }
+      .section-inner { padding: 0 20px; }
+
+      /* hero */
+      .hero { min-height: 100svh; }
+      .hero-title { font-size: 32px; }
+      .hero-sub { font-size: 12px; }
+      .hero-line-v { display: none; }
+
+      /* philosophy */
+      .philosophy-grid { grid-template-columns: 1fr; gap: 40px; }
+
+      /* craft */
+      .craft-inner { grid-template-columns: 1fr; gap: 36px; }
+      .craft-img { aspect-ratio: 3/2; }
+
+      /* craftsmen */
+      .craftsmen-grid { grid-template-columns: 1fr; gap: 40px; }
+      .craftsman-photo { aspect-ratio: 4/3; }
+
+      /* services */
+      .services-grid { grid-template-columns: 1fr; gap: 2px; }
+
+      /* news */
+      .news-item { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; }
+      .news-cat { width: fit-content; }
+
+      /* footer */
+      .footer-inner { padding: 0 20px; }
+      .footer-top { grid-template-columns: 1fr; gap: 40px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
   </style>
 </head>
 <body>
@@ -378,7 +467,19 @@
     <a href="#news">お知らせ</a>
     <a href="#contact" class="nav-cta">お問い合わせ</a>
   </nav>
+  <button class="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<div class="nav-drawer">
+  <a href="#philosophy" class="drawer-link">私たちの想い</a>
+  <a href="#craft" class="drawer-link">道具へのこだわり</a>
+  <a href="#craftsmen" class="drawer-link">職人たち</a>
+  <a href="#services" class="drawer-link">事業内容</a>
+  <a href="#news" class="drawer-link">お知らせ</a>
+  <a href="#contact" class="nav-cta drawer-link">お問い合わせ</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -639,6 +740,19 @@
     });
   }, { threshold: 0.15 });
   document.querySelectorAll('.fade-in, .philosophy-card, .craftsman-card').forEach(el => observer.observe(el));
+
+  const hamburger = document.querySelector('.hamburger');
+  const drawer = document.querySelector('.nav-drawer');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    drawer.classList.toggle('open');
+  });
+  document.querySelectorAll('.drawer-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      drawer.classList.remove('open');
+    });
+  });
 </script>
 </body>
 </html>
